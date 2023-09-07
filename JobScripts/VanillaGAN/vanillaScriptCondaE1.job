@@ -1,0 +1,17 @@
+#!/bin/bash
+#PBS -N vanillaScriptCondaE1
+#PBS -q gpu_1
+#PBS -l select=1:ncpus=9:ngpus=1
+#PBS -P CSCI1142
+#PBS -l walltime=1:00:00
+#PBS -o /mnt/lustre/users/schetty1/vanillaRuns/Condarun1E1restart.out
+#PBS -e /mnt/lustre/users/schetty1/vanillaRuns/Condarun1E1restart.err
+#PBS -m abe
+#PBS -M chtsha042@myuct.ac.za
+cd /home/schetty1/ 
+module load chpc/python/anaconda/3-2021.11
+eval "$(conda shell.bash hook)"
+conda activate /mnt/lustre/users/schetty1/CondaGAN
+module load chpc/cuda/11.6/PCIe/11.6 
+python3 /home/schetty1/VanillaGAN.py --dataset=Elbow --b2=0.999 --lr=0.002 --experiment=E1again
+conda deactivate
