@@ -1,0 +1,19 @@
+#!/bin/bash
+#PBS -N FineTuning
+#PBS -q serial
+#PBS -l select=1:ncpus=24:mpiprocs=24
+#PBS -P CSCI1142
+#PBS -l walltime=12:00:00
+#PBS -o /mnt/lustre/users/schetty1/InceptionRuns/FineTuning.out
+#PBS -e /mnt/lustre/users/schetty1/InceptionRuns/FineTuning.err
+#PBS -m abe
+#PBS -M chtsha042@myuct.ac.za
+cd /home/schetty1/
+module purge 
+ssh dtn
+module load chpc/python/anaconda/3-2021.11
+eval "$(conda shell.bash hook)"
+# export LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
+conda activate /home/schetty1/.conda/envs/test_env
+python3 /home/schetty1/MedFIDAttempt2/FineTuning.py
+conda deactivate
