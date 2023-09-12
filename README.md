@@ -16,24 +16,24 @@ At each epoch, the state of the generator, discrimator and their respective opti
 # An example run of a VanillaGAN model
 python3 [path]/VanillaGAN.py --dataset=Elbow --b2=0.999 --lr=0.002 --experiment=ExperimentName
 ```
-A list of aruements, their usage and default values are provided below:
+A list of aruements, their usage and default values are provided below. The options marked with a "Yes" are required for each new experiment 
 
-| Config                | Details | Default
-| :-------------------- | :---------- | :----------
-|`--n_epochs`| The number of training epochs | 400
-|`--batch_size`| Batch Size | 64
-|`--lr`| Learning rate **Change as per experiment specification**| 0.0002 
-|`--b1`| b1 hyperparameter of Adam optimizer **Change as per experiment specification** | 0.5
-|`--b2`|b2 hyperparameter of Adam optimizer **Change as per experiment specification**| 0.999
-|`--n_cpu`| Number of CPU threads to use during batch generation| 8
-|`--latent_dim`| Dimensionality of the latest space| 100
-|`--img_size`| Dimensions of the square image| 256
-|`--channels`| Number of image channels | 3
-|`--sample_interval`| Interval between image samples | 400
-|`--dataset`||
-|`--experiment`| The folder to train from **Change as per experiment specification**| Elbow
-|`--continueTraining`| If used, training will be restarted | -
-|`--restartFile`| Path to .pt file from which training should be continued **Change as per experiment specification**| - 
+| Config                | Details | Default | ExperimentSpecific
+| :-------------------- | :---------- | :---------- | :----------
+|`--lr`| Learning rate | 0.0002 | Yes
+|`--b1`| b1 hyperparameter of Adam optimizer | 0.5| Yes
+|`--b2`|b2 hyperparameter of Adam optimizer | 0.999| Yes
+|`--dataset`| The name of the folder from which the model will be trained| Elbow | Yes
+|`--experiment`| The name of the experiment. Should correspond to a folder within which files will be saved | N/A | Yes
+|`--n_epochs`| The number of training epochs | 400 | -
+|`--batch_size`| Batch Size | 64 | -
+|`--n_cpu`| Number of CPU threads to use during batch generation| 8| -
+|`--latent_dim`| Dimensionality of the latest space| 100| -
+|`--img_size`| Dimensions of the square image| 256| -
+|`--channels`| Number of image channels | 3| -
+|`--sample_interval`| Interval between image samples | 400| -
+|`--continueTraining`| If used, training will be restarted | -| -
+|`--restartFile`| Path to .pt file from which training should be continued| - | Yes
 
 
 ### Continue training
