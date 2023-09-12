@@ -28,18 +28,17 @@ parser.add_argument("--n_cpu", type=int, default=8, help="number of cpu threads 
 parser.add_argument("--latent_dim", type=int, default=100, help="dimensionality of the latent space")
 parser.add_argument("--img_size", type=int, default=256, help="size of each image dimension") #E.g. a 64x64 image would be 64 -> assumes square images
 parser.add_argument("--channels", type=int, default=3, help="number of image channels")
-parser.add_argument("--sample_interval", type=int, default=400, help="interval betwen image samples")
+parser.add_argument("--sample_interval", type=int, default=400, help="interval between image samples")
 parser.add_argument("--dataset", type=str, default="Elbow", help="Dataset to use [Elbow, Neck_Unlocalized_GAN, Neck_Unlocalized_Self]")
 parser.add_argument("--experiment", type=str, default="N/A", help="The experiment number corresponding to notes on tablet")
-#parser.add_argument("--continueTraining", dest="feature", action="store_true", default=False, help="continue training in [True, False]")
 parser.add_argument("--continueTraining", action='store_true')
 parser.add_argument("--restartFile", type=str, default=None, help="The path to the .pt file (saved state of the models) we want to continue training.")
 opt = parser.parse_args()
 print(opt)
 
-current_epoch = 0#to help in retraining
+current_epoch = 0
+# Method below will be used if we continue training
 if opt.continueTraining is True:
-    print("Continueing Training")
     i = opt.restartFile
     i = i.split("-")
     i = i[-1]
@@ -47,7 +46,6 @@ if opt.continueTraining is True:
     i = i[0]
     i = eval(i)
     current_epoch = i
-print("_____:", current_epoch)
 img_shape = (opt.channels, opt.img_size, opt.img_size)
 
 cuda = True if torch.cuda.is_available() else False
@@ -104,11 +102,9 @@ G_losses = []
 D_losses = []
 
 # Loss function
-adversarial_loss = torch.nn.BCELoss() #uses Binary Cross Entropy Closs (could use BCEwithLogits loss) which combines softmax and BCE
+adversarial_loss = torch.nn.BCELoss() 
 
-# Initialize generator and discriminator
-#generator = Generator()
-#discriminator = Discriminator()
+# Initialize generator and discriminator=
 if opt.continueTraining is False:
     print("Begining training a new model")
     generator = Generator()
@@ -123,52 +119,27 @@ else:
     generator.train()
     discriminator.train()
 
-
+# Checks if CUDA is available on the device
 print(torch.cuda.is_available())
 
+# If Cuda is not available, the model runs on the CPU. The training time is expected to decrease.
 if cuda:
     generator.cuda()
     discriminator.cuda()
     adversarial_loss.cuda()
 
 # Configure data loader
-#Replace with our dataset
 import Data_to_PyDataset
 converter = Data_to_PyDataset.DataPrep(opt.dataset, opt.img_size)
 data = converter.getData()
-#dataloader = torch.utils.data.DataLoader(
-#    data,
-#    batch_size=opt.batch_size,
-#    shuffle=True,
-#)
 
 dataloader = DataLoader(dataset=data, 
                                 batch_size=opt.batch_size, # how many samples per batch? MAKE OPT.BATCHSIZE
                                 shuffle=True) # shuffle the data?
-#print("dataloader:", dataloader, "of size", len(dataloader))
-'''
-def plotExampleTrainingData(dataloader):
-    #Plots training images
-    import matplotlib.pyplot as plt
-    import torchvision.utils as vutils
-    device = torch.device("cuda" if cuda else "cpu")
-    #real_batch = next(iter(dataloader))
-    items = []
-    for i in range(32):
-        items.append(next(iter(dataloader)))
-    real_batch = items
-    plt.figure(figsize=(8,8)) #The size of the plot
-    plt.axis("off")
-    plt.title("Training Images")
-    plt.imshow(np.transpose(vutils.make_grid(real_batch[0].to(device)[:32], padding=2, normalize=True).cpu(),(1,2,0)))
-    plt.savefig("/home/schetty1/lustre/GeneratedImages/VanillaGAN/TrainingImagesVanillaGAN.png")
 
-plotExampleTrainingData(dataloader=dataloader)
-'''
+
 
 # Optimizers
-#optimizer_G = torch.optim.Adam(generator.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
-#optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
 if opt.continueTraining is False:
     print("New optimizers")
     optimizer_G = torch.optim.Adam(generator.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
@@ -189,7 +160,6 @@ Tensor = torch.cuda.FloatTensor if cuda else torch.FloatTensor
 # ----------
 
 #File for writing output
-#output = open(f"/home/chtsha042/GANMetrics/VanillaGAN/Performance-{opt.dataset}.txt", "w")
 output = open(f"/home/schetty1/lustre/GeneratedImages/VanillaGAN/{opt.dataset}/{opt.experiment}/Performance-{opt.dataset}.txt", "w")
 output.write(str(opt)+"\n")
 output.write("Epoch,Batch,D loss,G loss\n")
@@ -214,18 +184,14 @@ j = 0
 for epoch in range(opt.n_epochs):
     epochinternal = j + current_epoch
     j = j+1
-    #for i, (imgs, _) in enumerate(dataloader):
     for i, imgs in enumerate(dataloader):
         output = open(f"/home/schetty1/lustre/GeneratedImages/VanillaGAN/{opt.dataset}/{opt.experiment}/Performance-{opt.dataset}.txt", "a")
-        #print("Start training loop:", i)
         # Adversarial ground truths
         valid = Variable(Tensor(imgs.size(0), 1).fill_(1.0), requires_grad=False)
         fake = Variable(Tensor(imgs.size(0), 1).fill_(0.0), requires_grad=False)
 
         # Configure input
         real_imgs = Variable(imgs.type(Tensor))
-        #hold = imgs.type(Tensor)
-        #real_imgs = Variable(hold.resize_(hold.size(0),1,opt.img_size,opt.img_size)) 
 
         # -----------------
         #  Train Generator
@@ -233,7 +199,7 @@ for epoch in range(opt.n_epochs):
 
         optimizer_G.zero_grad()
 
-        # Sample noise (from a normal dist) as generator input
+        # Sample noise
         z = Variable(Tensor(np.random.normal(0, 1, (imgs.shape[0], opt.latent_dim))))
 
         # Generate a batch of images
@@ -264,6 +230,7 @@ for epoch in range(opt.n_epochs):
             "[Epoch %d/%d] [Batch %d/%d] [D loss: %f] [G loss: %f]"
             % (epochinternal, opt.n_epochs, i, len(dataloader), d_loss.item(), g_loss.item())
         )
+
         output.write(
             "%d,%d,%f,%f\n"
             % (epochinternal, i, d_loss.item(), g_loss.item())
@@ -288,16 +255,14 @@ for epoch in range(opt.n_epochs):
             if current_epoch == 200:
                 for count in range(50):
                     print("in for loop")
-                #save_image(gen_imgs.data[count], f"GeneratedImages/VanillaGAN/{opt.dataset}/%d{count}.png" % batches_done)
-                    #save_image(gen_imgs.data[count], f"/home/schetty1/lustre/GeneratedImages/VanillaGAN/{opt.dataset}/{opt.experiment}/%d{count}-ep{current_epoch}.png"  % batches_done)
             else:
                 for count in range(10):
-                #save_image(gen_imgs.data[count], f"GeneratedImages/VanillaGAN/{opt.dataset}/%d{count}.png" % batches_done)
                     save_image(gen_imgs.data[count], f"/home/schetty1/lustre/GeneratedImages/VanillaGAN/{opt.dataset}/{opt.experiment}/%d{count}-ep{current_epoch}.png"  % batches_done)
-    '''
-    Save models here
-    '''
-    #generator._save_to_state_dict("")
+    
+    # ---------------------
+    #      Save Models
+    # ---------------------
+    
     current_epoch = current_epoch + 1
     torch.save({
         "gen_state_dict": generator.state_dict(),

@@ -1,10 +1,13 @@
-'''Assumptions: 
-1. Always enter the name of the subfolder in ImagesforResearch'''
+'''
+---------- DETAILS ----------
+Always provide the name of the subfolder in ImagesforResearch
+'''
 import torch
 from torchvision import datasets, transforms
 from PIL import Image
 import os
 
+#An extention of the PyTorch dataset class
 class CustomDataset(torch.utils.data.Dataset):
     def __init__(self, folder_path, transform=None):
         '''folder_path is the path to our images'''
@@ -26,51 +29,11 @@ class CustomDataset(torch.utils.data.Dataset):
 
 
 class DataPrep():
-
     def __init__(self, element, img_size):
         #Element = Elbow, Neck, etc. 
         self.element = element
         self.img_size = img_size
-
-    def getDatausingLabels(self):
-        #Imports
-        import pathlib
-        from torchvision import datasets
-        import torch
-        from torch.utils.data import DataLoader
-        from torchvision import datasets, transforms
-        import os
-
-        data_path = pathlib.Path("/home/schetty1/lustre/ImagesforResearch")
-        #data_path = pathlib.Path("C:/Users/shayl/OneDrive/Documents/Honors/Research/CodeBase/TrainingData")
-        image_path = data_path / self.element 
-        print("!!", image_path)
-        if image_path.is_dir(): #Check if directory exists
-            print("Currently working in:", os.getcwd())
-            print(f"{image_path} directory exists.")
-            print("Full Path:", os.getcwd() / image_path)
-            pass
-        else:
-            print("Currently working in:", os.getcwd())
-            print(f"{image_path} directory DOES NOT exist.")
-            print("Full Path:", os.getcwd / image_path)
-        data_transform = transforms.Compose(
-            [
-            # Resize the images to 64x64
-            transforms.Resize((self.img_size, self.img_size)),
-            # Turn the image into a torch.Tensor
-            transforms.ToTensor(), # this also converts all pixel values from 0 to 255 to be between 0.0 and 1.0
-            #Normalize the tensor
-            transforms.Normalize([0.5], [0.5])
-            ]
-            )
-        #Get all images
-        image_path_list = list(image_path.glob("*.jpg")) 
-
-        #Create new dataset:
-        newData =  datasets.ImageFolder(root=data_path, transform=data_transform,target_transform=None)
-        return newData
-
+    
     def getData(self):
         import torch
         from torchvision import datasets, transforms
@@ -88,7 +51,6 @@ class DataPrep():
             ]
             )
         data_path = pathlib.Path("/home/schetty1/lustre/ImagesforResearch")
-        #data_path = pathlib.Path("C:/Users/shayl/OneDrive/Documents/Honors/Research/CodeBase/TrainingData")
         image_path = data_path / self.element
         dataset = CustomDataset(folder_path=image_path, transform=data_transform)
         return dataset
