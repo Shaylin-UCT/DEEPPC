@@ -124,6 +124,10 @@ The [baseInception](./MedFID/baseInception.h5) model is the standard InceptionV3
 We include two core files: [InceptionTL.py](./MedFID/InceptionTL.py) and [FineTuning.py](./MedFID/FineTuning.py):\
 InceptionTL.py transforms InceptionV3 into the model specified in our paper and trains the new layers while keeping the pre-trained (on ImageNet)base model frozen. FineTuning.py also does this but then proceeds to fine-tune the model. The number of epochs of each operation should be specified in the respective scripts.
 
+To generate a MedFID score run the [FIDTests.py](./MedFID/FIDTests.py) script. This requires that the images be split into folders as one MedFID score is provided for the entire folder. Specify the folders in the *folders* array. Ideally, the folders should be subclasses of a common folder, specified as part of the *image_folder* variable. The *src_folder* is the folder of source images. For a fair comparison, the source folder should be a copy of original images but with an equal number of items as the generated imagery being measured. The outputs are written into a CSV file for ease of analysis.
+
+The [FIDConfirmation.py](./MedFID/FIDConfirmation.py) script can be used to generate the augmentations and generate the FID scores to reproduce the validation of MedFID. Note that this requires the model to be fine tuned with the [FineTuning.py](./MedFID/FineTuning.py) script. Alternatively, change the path to the desired trained Inception V3 model in line 15 of [FeatureExtraction.py](./MedFID/FeatureExtraction.py)
+
 ## Data_to_PyDataset.py
 The [Data_to_PyDataset.py](./Data_to_PyDataset.py) is responsible for converting a folder of images into a dataset usable by PyTorch by extending the built-in Dataset class. The main method is included as a test case. Instantiating the class requires 2 parameters: the image size and the *element*. The element is the class as defined above. It will return an instance of *torch.utils.data.Dataset*. The main method includes a test case that will print "DATALOADER IS CORRECT" if the code is set up correctly as well as an example of an image from the dataset. 
 
