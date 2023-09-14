@@ -5,7 +5,7 @@
 ##### 5hash
 Reference code: [test](./Data_to_PyDataset.py)
 # Vanilla GAN
-The implementation is derived from [here](https://github.com/eriklindernoren/PyTorch-GAN/blob/master/implementations/gan/gan.py) implementation. Significant changes include the added ability to continue training.
+The implementation is derived from [here](https://github.com/eriklindernoren/PyTorch-GAN/blob/master/implementations/gan/gan.py) implementation. Significant changes include the added ability to continue training. All Vanilla GAN models should be run with the [CondaGAN](./Environments/CondaGAN.yml) environment. The job scripts for each experiment can be found [here](./JobScripts/VanillaGAN/)
 
 
 ## Training
@@ -48,8 +48,7 @@ The model produces several artefacts all stored in the respective experiment sub
 
 # WGANGP
 
-The implementation is derived from [here](https://github.com/eriklindernoren/PyTorch-GAN/blob/master/implementations/wgan_gp/wgan_gp.py) implementation. Significant changes include the added ability to continue training.
-
+The implementation is derived from [here](https://github.com/eriklindernoren/PyTorch-GAN/blob/master/implementations/wgan_gp/wgan_gp.py) implementation. Significant changes include the added ability to continue training. All WGANGP models should be run with the [CondaGAN](./Environments/CondaGAN.yml) environment. The job scripts for each experiment can be found [here](./JobScripts/WGAN/)
 
 ## Training
 ### Training a new model
@@ -94,24 +93,26 @@ The model produces several artefacts all stored in the respective experiment sub
 For StyleGAN, we use the official StyleGAN2-ADA repo presented [here](https://github.com/NVlabs/stylegan2-ada-pytorch/blob/main/README.md?plain=1). Note that in our experiments, no ADA is used. For an overview of how to train models, the reader is refered to the aforementioned repo. Some basic operations are:
 
 **Preparing the dataset**\
-This will transform each image in the training set into a format usable by StyleGAN. This only needs to be run once. Hereinafter the new dataset will be called **ProcessedDataset**.
+This will transform each image in the training set into a format usable by StyleGAN. This only needs to be run once. Hereinafter the new dataset will be called **ProcessedDataset**. Use the [CondaGAN](./Environments/CondaGAN.yml) environment. See the [StyleGANDataprep.job](./JobScripts/StyleGAN/StyleGANDataprep.job) script for an example.
 
 ```.bash
 python3 [path]/stylegan2-ada-pytorch-main/dataset_tool.py --source [path to dataset] --dest [path to output folder] --width 512 --height 512 --resize-filter=box
 ```
 **Training model**\
-Initial training:
+Training models use the [CondaGANforStyle](./Environments/CondaGANforStyle.yml) environment.
+
+Initial training (see [this](./JobScripts/StyleGAN/StyleGANTrainingNewEnv.job) script for an example):
 ```.bash
 python3 [path]/stylegan2-ada-pytorch-main/train.py --outdir=/[folder to save output] --data=[path to ProcessedDataset] --gpus=1 --aug=noaug --snap=[Save model after "snap" iterations]
 
 ```
-Resume training:
+Resume training (see [this](./JobScripts/StyleGAN/StyleGANResTrainingNewEnv.job) script for an example):
 ```.bash
 python3 [path]/stylegan2-ada-pytorch-main/train.py --outdir=/[folder to save output] --data=[path to ProcessedDataset] --gpus=1 --aug=noaug --snap=[Save model after "snap" iterations] --resume=[path]/GeneratedImages/StyleGAN2ADA/[subfolder, if needed]/[training run]/[snapshot to resume training from].pkl
 ```
 
 **Generating Images**\
-Note that the seed value is ignored. Instead we inserted a new method at the top of [generate.py](./stylegan2-ada-pytorch-main/generate.py) called randomGenerate(). The **num_numbers** variable should be changed to an appropriate value. This will generate the specified number of random seed values to be used to generate imagery. The *network* is the path to the network snapshot you wish to generate imagery from. For example, to see the images generated at each snapshot, the associated network would have to have images generated seperately. 
+Note that the seed value is ignored. Instead we inserted a new method at the top of [generate.py](./stylegan2-ada-pytorch-main/generate.py) called randomGenerate(). The **num_numbers** variable should be changed to an appropriate value. This will generate the specified number of random seed values to be used to generate imagery. The *network* is the path to the network snapshot you wish to generate imagery from. For example, to see the images generated at each snapshot, the associated network would have to have images generated seperately. This uses the [GeneratorEnv](./Environments/GeneratorEnv.yml) environment. See the [StyleGANGeneratorNewEnv.job](./JobScripts/StyleGAN/StyleGANGeneratorNewEnv.job) script for an example.
 
 ```.bash
 python3 [path]/stylegan2-ada-pytorch-main/generateOriginal.py  --outdir=/[folder to save output] --trunc=1 --seeds=87,22,269 --network=[path]/GeneratedImages/StyleGAN2ADA/[subfolder, if needed]/[training run]/[snapshot to generate images from].pkl
@@ -119,14 +120,14 @@ python3 [path]/stylegan2-ada-pytorch-main/generateOriginal.py  --outdir=/[folder
 
 
 # MedFID
-The [baseInception](./MedFID/baseInception.h5) model is the standard InceptionV3 network.
+The [baseInception](./MedFID/baseInception.h5) model is the standard InceptionV3 network. All MedFID models are run in the [MedFID](./Environments/MedFID.yml) environment. Example job scripts are provided [here](./JobScripts/MedFID/).
 
 We include two core files: [InceptionTL.py](./MedFID/InceptionTL.py) and [FineTuning.py](./MedFID/FineTuning.py):\
 InceptionTL.py transforms InceptionV3 into the model specified in our paper and trains the new layers while keeping the pre-trained (on ImageNet)base model frozen. FineTuning.py also does this but then proceeds to fine-tune the model. The number of epochs of each operation should be specified in the respective scripts.
 
 To generate a MedFID score run the [FIDTests.py](./MedFID/FIDTests.py) script. This requires that the images be split into folders as one MedFID score is provided for the entire folder. Specify the folders in the *folders* array. Ideally, the folders should be subclasses of a common folder, specified as part of the *image_folder* variable. The *src_folder* is the folder of source images. For a fair comparison, the source folder should be a copy of original images but with an equal number of items as the generated imagery being measured. The outputs are written into a CSV file for ease of analysis.
 
-The [FIDConfirmation.py](./MedFID/FIDConfirmation.py) script can be used to generate the augmentations and generate the FID scores to reproduce the validation of MedFID. Note that this requires the model to be fine tuned with the [FineTuning.py](./MedFID/FineTuning.py) script. Alternatively, change the path to the desired trained Inception V3 model in line 15 of [FeatureExtraction.py](./MedFID/FeatureExtraction.py).
+The [FIDConfirmation.py](./MedFID/FIDConfirmation.py) script can be used to generate the augmentations and generate the FID scores to reproduce the validation of MedFID. Note that this requires the model to be fine tuned with the [FineTuning.py](./MedFID/FineTuning.py) script. Alternatively, change the path to the desired trained Inception V3 model in line 15 of [FeatureExtraction.py](./MedFID/FeatureExtraction.py). The MedFID computations of the augmented validation datasets, as used in the paper, can be done with [FIDTests.py](./MedFID/FIDTests.py). For ease of use, this method has been implemented for the Med and CelebA datasets in [FIDTestsCeleb.py](./MedFID/FIDTestsCeleb.py) and [FIDTestsMed.py](./MedFID/FIDTestsMed.py).
 
 The [dataSplitintoBatches.py](./MedFID/dataSplitintoBatches.py) method is a helper mehod to split the images generated by VanillaGAN and WGAN into batches based on its training iteration. For generating and splitting StyleGAN2 images please see the respective section. 
 
