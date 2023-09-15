@@ -2,7 +2,7 @@
 This codebase contains the code and experiments run as part of the final CS/IT Honours Project at the University of Cape Town under the project titled **Evaluating Generative Adversarial Networks on Small Medical Datasets**. The final paper, authored by Shaylin Chetty and supervised by Geoff Nitschke, can be found [here](./CHTSHA042-DEEPPC-GANs.pdf). The medical dataset used is not available for public use and, as such, is not included in this repo. 
 
 # Folder Structure
-However, the following file structure is recommended. This repo closely follows this structre.
+The following file structure is recommended. This repo closely follows this structre.
 
 ```
 project
