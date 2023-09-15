@@ -105,7 +105,7 @@ model.compile(optimizer = RMSprop(learning_rate=0.0001),
 #                           Train
 # ----------------------------------------------------------
 
-weights_file_path = "/home/schetty1/MedFIDAttempt2/Clusterweights.hdf5" #Needs a hdf5 format
+weights_file_path = "/home/schetty1/MedFIDAttempt2/TLWeights.hdf5" #Needs a hdf5 format
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler, EarlyStopping, ReduceLROnPlateau, TensorBoard
 checkpoint = ModelCheckpoint(weights_file_path, monitor="acc", verbose=1, save_best_only=True, mode = "max")
 early = EarlyStopping(monitor="acc", mode="max", patience=15) #See what these do
@@ -129,7 +129,7 @@ history = model.fit_generator(
 )
 
 results = model.evaluate(test_generator)
-model.save("/home/schetty1/MedFID/clusterInceptionTest.h5")
+model.save("/home/schetty1/MedFID/TLmodel.h5")
 print("results:", results)
 
 
