@@ -16,13 +16,9 @@ class FIDTests:
             writer.writerows(lists)
 
     def processFID(self):
-        #runProcesses()
-        #return
-        
         folders = ["/mnt/lustre/users/schetty1/GeneratedImages/StyleGAN2ADA/Elbow256/Test2"]
         for folder in folders:
-            folder = "blocks"
-            image_folder = "/mnt/lustre/users/schetty1/GeneratedImages/StyleGAN2ADA/Elbow256/Test2" #f"/mnt/lustre/users/schetty1/GeneratedImages/StyleGAN2ADA/Elbow256/{folder}"
+            image_folder = f"/mnt/lustre/users/schetty1/GeneratedImages/StyleGAN2ADA/Elbow256/{folder}"
             print("Working in:", image_folder)
             csvData = []
             headers = ["Set", "FID"]
