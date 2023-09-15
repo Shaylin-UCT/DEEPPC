@@ -1,5 +1,8 @@
 # Evaluating Generative Adversarial Networks on Small Medical Datasets: DEEPPC
-This codebase contains the code and experiments run for the final CS/IT Honours Project at the University of Cape Town. The final paper can be found [here](./CHTSHA042-DEEPPC-GANs.pdf)
+This codebase contains the code and experiments run for the final CS/IT Honours Project at the University of Cape Town. The final paper can be found [here](./CHTSHA042-DEEPPC-GANs.pdf). The dataset is not available for public use and, as such, is not included in this repo. 
+
+General Notes:
+* The trained models for Vanilla GAN and WGANGP are not availble in this repo due to their large size (>3Gb each)
 # Vanilla GAN
 The implementation is derived from [here](https://github.com/eriklindernoren/PyTorch-GAN/blob/master/implementations/gan/gan.py) implementation. Significant changes include the added ability to continue training. All Vanilla GAN models should be run with the [CondaGAN](./Environments/CondaGAN.yml) environment. The job scripts for each experiment can be found [here](./JobScripts/VanillaGAN/)
 
@@ -134,7 +137,7 @@ In the GAN, instantiate the class and call *getData()*. The returned object shou
 
 # Models
 ## MedFID
-For ease of use, the Keras models used to generate MedFID scores are provided.
+For ease of use, the Keras models used to generate MedFID scores are provided. The links to the datasets used for fine tuning the base Inception Network to create FID scores are available in our paper. 
 | Model                | Usage 
 | :-------------------- | :---------- 
 |`--baseInception.h5`| This is the base InceptionV3 network pretrained on ImageNet. This is used by [FineTuning.py](./MedFID/FineTuning.py) and [InceptionTL.py](./MedFID/InceptionTL.py).
