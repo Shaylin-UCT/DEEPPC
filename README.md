@@ -4,7 +4,7 @@ This codebase contains the code and experiments run as part of the final CS/IT H
 General Notes:
 * The trained models for Vanilla GAN and WGANGP are not availble in this repo due to their large size (>3Gb each) however they can be obtained by training the selected GAN as discussed below. 
 # Vanilla GAN
-The implementation is derived from [this](https://github.com/eriklindernoren/PyTorch-GAN/blob/master/implementations/gan/gan.py) implementation. Significant changes to the original implementation include the added ability to continue training from a desired epoch. This will load the state of the Generator, Discriminator and thier respective optimizers for the selected epoch. All Vanilla GAN models should be run with the [CondaGAN](./Environments/CondaGAN.yml) environment. The job scripts for each experiment can be found [here](./JobScripts/VanillaGAN/).
+The implementation is derived from that of [eriklindernoren](https://github.com/eriklindernoren/PyTorch-GAN/blob/master/implementations/gan/gan.py). Significant changes to the original implementation include the added ability to continue training from a desired epoch. This will load the state of the Generator, Discriminator and thier respective optimizers for the selected epoch. All Vanilla GAN models should be run with the [CondaGAN](./Environments/CondaGAN.yml) environment. The job scripts for each experiment can be found [here](./JobScripts/VanillaGAN/).
 
 
 ## Training
@@ -48,7 +48,7 @@ The model produces several artefacts all stored in the respective experiment sub
 * At each epoch, we save the state of both the generator and discriminator as well as their respective optimizers. This is all saved in a "model-*epochnumber*.pt" file.
 
 # WGANGP
-The implementation is derived from [here](https://github.com/eriklindernoren/PyTorch-GAN/blob/master/implementations/wgan_gp/wgan_gp.py) implementation. Significant changes to the original implementation include the added ability to continue training from a desired epoch. This will load the state of the Generator, Discriminator and thier respective optimizers for the selected epoch. All WGANGP models should be run with the [CondaGAN](./Environments/CondaGAN.yml) environment. The job scripts for each experiment can be found [here](./JobScripts/WGAN/)
+The implementation is derived from that of [eriklindernoren](https://github.com/eriklindernoren/PyTorch-GAN/blob/master/implementations/wgan_gp/wgan_gp.py). Significant changes to the original implementation include the added ability to continue training from a desired epoch. This will load the state of the Generator, Discriminator and thier respective optimizers for the selected epoch. All WGANGP models should be run with the [CondaGAN](./Environments/CondaGAN.yml) environment. The job scripts for each experiment can be found [here](./JobScripts/WGAN/)
 
 ## Training
 ### Training a new model
@@ -100,7 +100,7 @@ This will transform each image in the training set into a format usable by Style
 python3 [path]/stylegan2-ada-pytorch-main/dataset_tool.py --source [path to dataset] --dest [path to output folder] --width 512 --height 512 --resize-filter=box
 ```
 **Training model**\
-Training models use the [CondaGANforStyle](./Environments/CondaGANforStyle.yml) environment.
+Train models use the [CondaGANforStyle](./Environments/CondaGANforStyle.yml) environment.
 
 Initial training (see [StyleGANTrainingNewEnv.job](./JobScripts/StyleGAN/StyleGANTrainingNewEnv.job) for an example):
 ```.bash
