@@ -1,9 +1,5 @@
-# 1hash
-## 2hash
-### 3hash
-#### 4hash
-##### 5hash
-Reference code: [test](./Data_to_PyDataset.py)
+# Evaluating Generative Adversarial Networks on Small Medical Datasets: DEEPPC
+This codebase contains the code and experiments run for the final CS/IT Honours Project at the University of Cape Town. The final paper can be found [here](./CHTSHA042-DEEPPC-GANs.pdf)
 # Vanilla GAN
 The implementation is derived from [here](https://github.com/eriklindernoren/PyTorch-GAN/blob/master/implementations/gan/gan.py) implementation. Significant changes include the added ability to continue training. All Vanilla GAN models should be run with the [CondaGAN](./Environments/CondaGAN.yml) environment. The job scripts for each experiment can be found [here](./JobScripts/VanillaGAN/)
 
