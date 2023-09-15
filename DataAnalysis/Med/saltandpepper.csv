@@ -1,0 +1,22 @@
+Iteration,FID
+noise=0.05,FID: 44.146
+noise=0.35,FID: 210.265
+noise=0.65,FID: 384.107
+noise=0.5,FID: 280.941
+noise=0.55,FID: 332.455
+noise=0.2,FID: 110.282
+noise=0.45,FID: 267.460
+noise=0.15,FID: 97.111
+noise=0.4,FID: 218.780
+noise=1.0,FID: 552.913
+noise=0.1,FID: 64.635
+noise=0.85,FID: 489.273
+noise=0.9,FID: 509.876
+noise=0.75,FID: 448.171
+noise=0.95,FID: 531.358
+noise=0.7,FID: 385.115
+noise=0.6,FID: 337.546
+noise=0.8,FID: 479.195
+noise=0.0,FID: 26.753
+noise=0.3,FID: 165.738
+noise=0.25,FID: 152.562

@@ -1,0 +1,17 @@
+rm(list=ls())
+mean = c(2, 5, 1, 2, 5)
+sdev = c(0.2, 0.4, 0.1, 0.8, 0.2)
+
+plotWithError <- function(mean, sdev)
+{
+  x = 1:5
+  plot(x, mean,
+     ylim=range(c(mean-sdev, mean+sdev)),
+     pch=19, xlab="Measurements", ylab="Mean +/- SD",
+     main="Scatter plot with std.dev error bars"
+)
+# hack: we draw arrows but with very special "arrowheads"
+arrows(x, mean-sdev, x, mean+sdev, length=0.05, angle=90, code=3)
+}
+plotWithError(mean, sdev)
+

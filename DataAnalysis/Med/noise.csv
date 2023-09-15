@@ -1,0 +1,22 @@
+Iteration,FID
+mean=1.5-stdev=0.1,FID: 166.272
+mean=0.9-stdev=0.1,FID: 31.965
+mean=1.6-stdev=0.1,FID: 166.272
+mean=1.7-stdev=0.1,FID: 166.272
+mean=0.1-stdev=0.1,FID: 20.845
+mean=1.8-stdev=0.1,FID: 166.272
+mean=1.9-stdev=0.1,FID: 166.272
+mean=1.2-stdev=0.1,FID: 41.804
+mean=1.0-stdev=0.1,FID: 49.369
+mean=1.3-stdev=0.1,FID: 121.395
+mean=1.4-stdev=0.1,FID: 164.891
+mean=1.1-stdev=0.1,FID: 71.315
+mean=0.5-stdev=0.1,FID: 18.413
+mean=0.3-stdev=0.1,FID: 25.878
+mean=0.0-stdev=0.1,FID: 24.878
+mean=0.8-stdev=0.1,FID: 29.946
+mean=0.6-stdev=0.1,FID: 22.079
+mean=0.7-stdev=0.1,FID: 22.319
+mean=2.0-stdev=0.1,FID: 166.272
+mean=0.2-stdev=0.1,FID: 25.701
+mean=0.4-stdev=0.1,FID: 30.764

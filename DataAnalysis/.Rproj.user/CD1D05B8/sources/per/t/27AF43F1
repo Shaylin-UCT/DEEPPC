@@ -1,0 +1,26 @@
+{
+    "id": "27AF43F1",
+    "path": "~/Honors/Research/CodeBase/DataAnalysis/ttests.R",
+    "project_path": "ttests.R",
+    "type": "r_source",
+    "hash": "703600021",
+    "contents": "",
+    "dirty": true,
+    "created": 1693075442494.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "57,20",
+        "scrollLine": "0"
+    },
+    "folds": "67|1|83|0|\n",
+    "lastKnownWriteTime": 1694089721,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1694093759971,
+    "read_only": false,
+    "read_only_alternatives": []
+}
